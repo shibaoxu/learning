@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: amqp-demo
+  rabbitmq:
+    username: user
+    password: password
+    host: localhost
+

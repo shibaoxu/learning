@@ -3,8 +3,8 @@ import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.DeliverCallback;
 
-public class ReceiveLogs {
-    private final static String EXCHANGE_NAME = "logs";
+public class ReceiveLogsDirect {
+    private final static String EXCHANGE_NAME = "logs_direct";
 
     public static void main(String[] args) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
@@ -15,11 +15,11 @@ public class ReceiveLogs {
         Channel channel = connection.createChannel();
         boolean durable = true;
 
-        channel.exchangeDeclare(EXCHANGE_NAME, "fanout", durable);
-        // String queueName = channel.queueDeclare().getQueue();
+        channel.exchangeDeclare(EXCHANGE_NAME, "direct", durable);
         String queueName = args[0];
+        String routeKey = args[1];
         channel.queueDeclare(queueName, durable, false, false, null);
-        channel.queueBind(queueName, EXCHANGE_NAME, "");
+        channel.queueBind(queueName, EXCHANGE_NAME, routeKey);
 
         System.out.println("[x] Wating for message. To exit press CTRL+C");
 
